@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+adafruit-ampy = ">=1.0.5,<1.1"
+docker-compose = "*"
+esptool = "*"
+rshell = "*"
+
+[packages]
+webthing = "*"
+requests = "*"
+
+[requires]
+python_version = "3"
+
+[scripts]
+erase = "esptool.py --port=/dev/ttyUSB0 erase_flash"
+flash = "esptool.py --port=/dev/ttyUSB0 --baud=460800 write_flash --flash_size=detect 0 ./esp8266-20191220-v1.12.bin"
+repl = "rshell --port=/dev/ttyUSB0 repl"
+compile = "bash -c 'for f in ./src/*.py; do ./mpy-cross $f -o \"./dist/$(basename $f .py).mpy\"; done'"
+deploy = "rshell --port=/dev/ttyUSB0 cp -r ./dist/* /pyboard"
+
